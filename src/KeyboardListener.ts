@@ -11,25 +11,29 @@ class KeyboardListener implements KeyboardMethods {
     this.logKeys = [];
     this.keyboardListener = new KeyboardEvent("keydown");
     this.run.bind(this);
-    this.setKeyboardListener.bind(this);
     this.getLastEvent.bind(this);
-  }
-
-  private setKeyboardListener(kb: KeyboardEvent): this {
-    if (!this.logKeys) {
-      this.logKeys = [];
-    }
-
-    this.keyboardListener = kb;
-    this.logKeys.push(kb.key);
-    return this;
   }
 
   public getLastEvent(): KeyboardEvent {
     return this.keyboardListener;
   }
   public run() {
-    this.document.addEventListener("keydown", this.setKeyboardListener);
+    this.document.addEventListener("keydown", (kb) => {
+      if (!this.logKeys) {
+        this.logKeys = [];
+      }
+
+      this.keyboardListener = kb;
+      this.logKeys.push(kb.key);
+
+      const newEvent = new CustomEvent("customEventKeyPressed", {
+        detail: kb,
+      });
+
+      this.document.dispatchEvent(newEvent);
+
+      return this;
+    });
   }
 }
 

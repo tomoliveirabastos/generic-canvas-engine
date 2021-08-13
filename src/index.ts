@@ -10,17 +10,22 @@ const keyboardListener = new KeyboardListener(document);
 
 const personagem = new Personagem({ x: 0, y: 0, size: 20, speed: 0.1 });
 
-const canvas: HTMLCanvasElement = document.createElement("canvas");
-const ctx: any = canvas.getContext("2d");
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
 const engine = new Engine(ctx);
 
-canvas.height = 400;
-canvas.width = 400;
+canvas.height = 600;
+canvas.width = 600;
 
-engine.update(update.main, personagem, canvas);
-engine.render(render.main, personagem, ctx, canvas);
+engine.update((a: Personagem) => update.main(a), personagem);
+engine.render(
+  (a: Personagem, b: CanvasRenderingContext2D, c: HTMLCanvasElement) =>
+    render.main(a, b, c),
+  personagem,
+  ctx,
+  canvas,
+);
 
 engine.run();
 keyboardListener.run();
-
 document.body.appendChild(canvas);

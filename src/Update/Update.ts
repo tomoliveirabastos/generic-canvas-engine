@@ -1,22 +1,35 @@
 import { Personagem } from "../Personagem";
 interface IUpdateMethods {
-  main(p: Personagem, canvas: HTMLCanvasElement): void;
+  main(p: Personagem): void;
 }
 class Update implements IUpdateMethods {
-  public main(p: Personagem, canvas: HTMLCanvasElement): void {
-    if (p.getY() > canvas.height) {
-      let speed = p.getSpeed();
+  private lastKeyPressed: string;
+  constructor() {
+    this.lastKeyPressed = "ArrowDown";
+    document.addEventListener("customEventKeyPressed", (e: any) => {
+      this.lastKeyPressed = e.detail.key;
+    });
+  }
+  public main(p: Personagem): void {
+    const x = p.getX();
+    const y = p.getY();
 
-      speed *= -0.99;
+    const obj: any = {
+      "ArrowUp": (p: Personagem) => {
+        p.setY(y - 2);
+      },
+      "ArrowDown": (p: Personagem) => {
+        p.setY(y + 2);
+      },
+      "ArrowLeft": (p: Personagem) => {
+        p.setX(x - 2);
+      },
+      "ArrowRight": (p: Personagem) => {
+        p.setX(x + 2);
+      },
+    };
 
-      p.setSpeed(speed);
-    }
-
-    p.setSpeed(p.getSpeed() + 0.1);
-
-    const newPosY = p.getY() + p.getSpeed();
-
-    p.setY(newPosY);
+    obj[this.lastKeyPressed](p);
   }
 }
 

@@ -12,8 +12,11 @@ class Render implements IRenderMethods {
     p: Personagem,
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement,
+    clear: boolean = true,
   ) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (clear) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
     ctx.fillRect(p.getX(), p.getY(), p.getSize(), p.getSize());
   }
 }
