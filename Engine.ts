@@ -1,5 +1,5 @@
 interface IEngineMethods{
-       loop(): void
+       run(): void
        update(updateParameter : Function, ...paramUpdate : any): void
        render(renderParameter: Function, ...paramRender: any): void
 }
@@ -10,34 +10,34 @@ interface ICanvasObjects{
 }
 class Engine implements IEngineMethods{
        private ctx : any
-       private updateObj : ICanvasObjects
-       private renderObj : ICanvasObjects
+       private _update : ICanvasObjects
+       private _render : ICanvasObjects
        constructor(ctx : any){
               this.ctx = ctx;
-              this.updateObj = {
+              this._update = {
                      function : () => {},
                      params: []
               }
-              this.renderObj = {
+              this._render= {
                      function : () => {},
                      params: []
               }
        }
 
-       public loop(): this {
+       public run(): this {
 
-              const update = this.updateObj
-              const render = this.renderObj
+              const update = this._update
+              const render = this._render
 
               render.function(...render.params)
               update.function(...update.params)
+              requestAnimationFrame(() => this.run())
               
-              requestAnimationFrame(this.loop)
               return this
        }
 
        public update(functionParameter: Function, ...params:any): this {
-              this.updateObj = {
+              this._update = {
                      function : functionParameter,
                      params: [...params],
               }
@@ -45,7 +45,7 @@ class Engine implements IEngineMethods{
               return this
        }
        public render(functionParameter: Function, ...params:any): this {
-              this.renderObj = {
+              this._render = {
                      function : functionParameter,
                      params: [...params]
               }
