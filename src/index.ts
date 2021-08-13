@@ -13,7 +13,7 @@ const personagem = new Personagem({
   y: 0,
   size: 20,
   speed: 0.1,
-    });
+});
 
 const canvas: HTMLCanvasElement = document.createElement("canvas");
 const ctx: any = canvas.getContext("2d");
