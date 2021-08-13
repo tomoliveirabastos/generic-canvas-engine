@@ -1,6 +1,8 @@
 import {Personagem} from "./Personagem";
 import {Engine} from "./Engine";
+import {KeyboardListener} from "./KeyboardListener";
 
+const keyboardListener = new KeyboardListener(document)
 const personagem = new Personagem({
        x: 0,
        y: 0,
@@ -9,9 +11,11 @@ const personagem = new Personagem({
 });
 
 const canvas : HTMLCanvasElement = document.createElement("canvas")
+
 const ctx : any = canvas.getContext("2d")
 
 canvas.height = 400
+
 canvas.width = 400
 
 document.body.appendChild(canvas)
@@ -37,11 +41,9 @@ engine.update((p: Personagem, canvas : HTMLCanvasElement) => {
 
 }, personagem, canvas)
 engine.render((p: Personagem, ctx : CanvasRenderingContext2D, canvas : HTMLCanvasElement) => {
-
        ctx.clearRect(0, 0, canvas.width, canvas.height)
-
        ctx.fillRect(p.getX(), p.getY(), p.getSize(), p.getSize())
-
 }, personagem, ctx, canvas)
 
 engine.run()
+keyboardListener.run()
